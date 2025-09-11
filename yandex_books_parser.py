@@ -1,7 +1,7 @@
-import pip
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+
 
 def collect_user_rates(user_login):
     page_num = 1
@@ -9,7 +9,8 @@ def collect_user_rates(user_login):
     while True:
         url = f'https://books.yandex.ru/@{user_login}/votes/'  # Убедитесь, что user_login соответствует формату
         html_content = requests.get(url).text
-        soup = BeautifulSoup(html_content, 'lxml')
+        # Изменение парсера на html.parser
+        soup = BeautifulSoup(html_content, 'html.parser')
         entries = soup.find_all('div', class_='item')
 
         if len(entries) == 0:  # Признак остановки
@@ -34,8 +35,9 @@ def collect_user_rates(user_login):
             })
 
         page_num += 1  # Переходим на следующую страницу
-    
+
     return data
+
 
 user_login = input("Введите логин пользователя: ")
 user_rates = collect_user_rates(user_login)
@@ -44,6 +46,7 @@ print(len(user_rates))
 
 df = pd.DataFrame(user_rates)
 df.to_excel('user_rates1.xlsx', index=False)  # Сохраняем файл без индексов
+
 
 def get_rated_books(user_rates):
     rated_books = []
@@ -56,6 +59,7 @@ def get_rated_books(user_rates):
             continue  # Пропускаем, если значение не может быть преобразовано
 
     return rated_books
+
 
 user_rates_above_8 = get_rated_books(user_rates)
 
