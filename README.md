@@ -15,6 +15,8 @@
 
 Установите необходимые библиотеки:
 pip install requests beautifulsoup4 pandas openpyxl
+
+
 3. Запуск
 
 Сохраните код в файл, например kinoafisha_parser_2025.py, и выполните следующую команду в терминале:
